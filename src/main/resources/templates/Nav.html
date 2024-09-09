@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <title>대시보드</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <style>
+            /* 내비게이션 스타일 */
+            .nav-tabs {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #f8f9fa;
+                height: 100vh;
+                justify-content: flex-start;
+                padding: 20px 0;
+            }
+            .nav-tabs .nav-link {
+                background-color: #337ab7;
+                color: white;
+                width: 55px;
+                height: 55px;
+                margin-bottom: 10px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                position: relative;
+            }
+            .nav-tabs .nav-link img {
+                width: 35px;
+                height: 35px;
+            }
+            .nav-tabs .nav-link.active {
+                background-color: #23527c;
+            }
+            .nav-tabs .nav-link.dropdown-toggle::after {
+                display: none;
+            }
+            .sidebar {
+                width: 100px;
+                background-color: #f8f9fa;
+            }
+            .dropdown-menu {
+                background-color: #337ab7;
+                border: none;
+                border-radius: 15px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                position: absolute;
+            }
+            .dropdown-item {
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-size: 20px;
+            }
+            .dropdown-item:hover {
+                background-color: #23527c;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- 내비게이션 -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="sidebar">
+                    <ul class="nav nav-tabs" id="navId" role="tablist">
+                        <li class="nav-item"></li>
+                            <a href="#tab1Id" class="nav-link active" data-bs-toggle="tab">
+                                <img src="https://img.icons8.com/material-outlined/48/ffffff/home.png" alt="Home Icon" />
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://img.icons8.com/material-outlined/48/ffffff/user.png" alt="User Icon" />
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#">김춘분(37)</a></li>
+                                <li><a class="dropdown-item" href="#">박춘자(40)</a></li>
+                                <li><a class="dropdown-item" href="#">정영자(47)</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#tab3Id" class="nav-link" data-bs-toggle="tab">
+                                <img src="https://img.icons8.com/material-outlined/48/ffffff/settings.png" alt="Settings Icon" />
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
