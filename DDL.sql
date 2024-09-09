@@ -1,15 +1,15 @@
 CREATE TABLE "ELDERLY" (
-  "ID" integer GENERATED AS IDENTITY PRIMARY KEY,
+  "ID" integer PRIMARY KEY,
   "NAME" integer NOT NULL,
   "AGE" integer DEFAULT 0,
-  "CONTACT" varchar2,
+  "CONTACT" varchar2(100),
   "CREATE_TIME" timestamp NOT NULL
 );
 
 CREATE TABLE "ROBOT_MENUAL" (
   "ID" integer PRIMARY KEY,
-  "RANK" varchar2,
-  "DETECT_METHOD" varchar2,
+  "RANK" varchar2(100),
+  "DETECT_METHOD" varchar2(255),
   "AGE" integer DEFAULT 0,
   "TOTAL_ATTEMPTS" integer,
   "SUCCESS_ATTEMPTS" timestamp,
@@ -20,25 +20,25 @@ CREATE TABLE "ROBOT_DETECT" (
   "NO" integer GENERATED AS IDENTITY,
   "ID" integer,
   "CREATE_TIME" timestamp NOT NULL,
-  "TEXT" varchar2,
+  "TEXT" varchar2(255),
   "EMOTION" varchar2 DEFAULT 'y',
-  "DETECT_METHOD" varchar2,
-  "SUCCESS_YN" varchar2 DEFAULT 'y',
+  "DETECT_METHOD" varchar2(255),
+  "SUCCESS_YN" varchar2(50) DEFAULT 'y',
   PRIMARY KEY ("NO", "ID")
 );
 
 CREATE TABLE "ROBOT_DIALOG" (
   "ID" integer PRIMARY KEY,
   "CREATE_TIME" timestamp NOT NULL,
-  "ELDERLY_TEXT" varchar2,
-  "ROBOT_TEXT" varchar2,
-  "MORNING_NIGHT" varchar2 DEFAULT 'morning'
+  "ELDERLY_TEXT" varchar2(255),
+  "ROBOT_TEXT" varchar2(255),
+  "MORNING_NIGHT" varchar2(50) DEFAULT 'morning'
 );
 
 CREATE TABLE "CARE_HANDOVER" (
   "ID" integer PRIMARY KEY,
   "CREATE_TIME" timestamp NOT NULL,
-  "TEXT" varchar2
+  "TEXT" varchar2(255)
 );
 
 ALTER TABLE "ELDERLY" ADD FOREIGN KEY ("ID") REFERENCES "ROBOT_MENUAL" ("ID");
