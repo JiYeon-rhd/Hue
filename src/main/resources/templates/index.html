@@ -180,14 +180,21 @@
             <div class="card text-start">
                 <img class="card-img-top" src="/img/grandma.png" alt="Title" />
                 <div class="card-body">
-                    <h4 class="card-title">인적사항</h4>
-                    <p class="card-text">성함 : 김춘분</p>
-                    <p class="card-text">성별 : 여</p>
-                    <p class="card-text">생년월일 : 38.02.24</p>
-                    <p class="card-text">학력 : 무</p>
-                    <p class="card-text">건강상태 : 치매, 청각장애 3급, 우울증, 관절염</p>
-                    <p class="card-text">비상연락망(자) : 010-0000-0000</p>
-                    <p class="card-text">비상연락망(녀) : 010-0000-0000</p>
+<!--                    <h4 class="card-title">인적사항</h4>-->
+<!--                    <p class="card-text">성함 : 김춘분</p>-->
+<!--                    <p class="card-text">성별 : 여</p>-->
+<!--                    <p class="card-text">생년월일 : 38.02.24</p>-->
+<!--                    <p class="card-text">학력 : 무</p>-->
+<!--                    <p class="card-text">건강상태 : 치매, 청각장애 3급, 우울증, 관절염</p>-->
+<!--                    <p class="card-text">비상연락망(자) : 010-0000-0000</p>-->
+<!--                    <p class="card-text">비상연락망(녀) : 010-0000-0000</p>-->
+                    <p>이름: <span th:text="${elderly.name}"></span></p>
+                    <p>나이: <span th:text="${elderly.age}"></span></p>
+                    <p>성별: <span th:text="${elderly.gender}"></span></p>
+                    <p>생년월일: <span th:text="${elderly.birth}"></span></p>
+                    <p>건강 상태: <span th:text="${elderly.condition}"></span></p>
+                    <p>연락처: <span th:text="${elderly.contact}"></span></p>
+                    <p>등록 시간: <span th:text="${elderly.create_time}"></span></p>
                 </div>
             </div>
         </div>
