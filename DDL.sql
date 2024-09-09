@@ -17,11 +17,11 @@ CREATE TABLE "ROBOT_MENUAL" (
 );
 
 CREATE TABLE "ROBOT_DETECT" (
-  "NO" integer GENERATED AS IDENTITY,
+  "NO" integer,
   "ID" integer,
   "CREATE_TIME" timestamp NOT NULL,
   "TEXT" varchar2(255),
-  "EMOTION" varchar2 DEFAULT 'y',
+  "EMOTION" varchar2(255) DEFAULT 'y',
   "DETECT_METHOD" varchar2(255),
   "SUCCESS_YN" varchar2(50) DEFAULT 'y',
   PRIMARY KEY ("NO", "ID")
