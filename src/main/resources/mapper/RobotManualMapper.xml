@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hue.mapper.RobotManualMapper">
+    <select id="findTop3ByElderlyId" parameterType="int" resultType="com.example.hue.dto.RobotManual">
+        SELECT
+        ELDERLY_ID,
+        RANK,
+        DETECT_METHOD,
+        TOTAL_ATTEMPTS,
+        SUCCESS_ATTEMPTS,
+        CREATE_TIME
+        FROM ROBOT_MANUAL
+        WHERE ELDERLY_ID = #{elderlyId}
+        AND RANK &lt;= 3
+        ORDER BY RANK ASC
+    </select>
+</mapper>

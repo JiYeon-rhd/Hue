@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.hue.mapper.ElderlyMapper">
-    <select id="getElderlyById" parameterType="int" resultType="com.example.hue.dto.Elderly">
-        SELECT
-            ELDERLY_ID,
-            NAME,
-            AGE,
-            GENDER,
-            BIRTH,
-            CONDITION,
-            CONTACT,
-            CREATE_TIME
-        FROM ELDERLY
-        WHERE ELDERLY_ID = #{id}
-    </select>
-
     <!-- 특정 ID로 노인 찾기 -->
     <select id="findById" parameterType="int" resultType="com.example.hue.dto.Elderly">
         SELECT

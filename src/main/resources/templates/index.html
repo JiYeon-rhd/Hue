@@ -129,14 +129,42 @@
             cursor: pointer;
         }
 
+        /* Inheritance */
         .symptom-list {
             list-style-type: none;
             padding-left: 0;
             margin-top: 10px;
         }
 
+        /* Updated layout for each care handover item */
         .symptom-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
             margin-bottom: 5px;
+            background-color: #f9f9f9;
+        }
+
+        /* Align radio button with the text */
+        .symptom-list .form-check-input {
+            margin-right: 10px;
+        }
+
+        /* Align delete button at the end */
+        .symptom-list button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .symptom-list button:hover {
+            background-color: #c82333;
         }
 
         /* Divider line between sections */
@@ -206,7 +234,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="card-title" id="date-title">9월 5일</h4>
-                        <button id="change-date-btn" class="btn btn-outline-primary btn-sm">날짜 변경</button>
+                        <input type="date" id="datePicker" class="form-control w-auto" />
                     </div>
 
                     <!-- 상태와 대화 요약을 가로로 배치 -->
@@ -227,10 +255,9 @@
                         </div>
 
                         <!-- 대화 요약 -->
-                        <div class="col-md-6">
-                            <div class="conversation-title">대화 요약</div>
-                            <p>휴: 어르신 안녕히 주무셨어요?<br>어르신: 꿈자리가 사나웠어</p>
-                            <p>휴: 오늘 기분은 어떠세요?<br>어르신: 피곤해</p>
+                        <div class="conversation-title mt-4">대화 요약</div>
+                        <div id="dialogSummary">
+                            <!-- 여기에 대화가 출력될 예정입니다 -->
                         </div>
                     </div>
                 </div>
@@ -248,21 +275,29 @@
                             </svg>
                         </div>
 
+<!--                        <div class="priority-list">-->
+<!--                            <div class="priority-item">-->
+<!--                                <span>1. 바둑두기</span>-->
+<!--                                <span class="badge">80%</span>-->
+<!--                            </div>-->
+<!--                            <div class="priority-item">-->
+<!--                                <span>2. 공감하는 말하기</span>-->
+<!--                                <span class="badge">70%</span>-->
+<!--                            </div>-->
+<!--                            <div class="priority-item">-->
+<!--                                <span>3. 요양보호사 호출</span>-->
+<!--                                <span class="badge">40%</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="priority-list">
-                            <div class="priority-item">
-                                <span>1. 바둑두기</span>
-                                <span class="badge">80%</span>
-                            </div>
-                            <div class="priority-item">
-                                <span>2. 공감하는 말하기</span>
-                                <span class="badge">70%</span>
-                            </div>
-                            <div class="priority-item">
-                                <span>3. 요양보호사 호출</span>
-                                <span class="badge">40%</span>
-                            </div>
+                            <!-- 상위 3개의 대응 메뉴얼 출력 -->
+<!--                            <div th:each="manual : ${top3Manuals}">-->
+<!--                                <div class="priority-item">-->
+<!--                                    <span th:text="${manual.detect_method}">대응 방법</span>-->
+<!--                                    <span class="badge" th:text="${#numbers.formatDecimal(manual.successRate, 0, 2)} + '%'">성공률</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
-
                         <!-- Chart.js chart container -->
                         <div class="chart-container">
                             <canvas id="myChart"></canvas>
@@ -287,20 +322,11 @@
                         <div class="divider"></div>
 
                         <!-- 인수인계 사항 -->
-                        <h5 class="card-subtitle mb-3">인수인계 사항</h5>
                         <div class="handover-section">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="handover" id="handover1">
-                                <label class="form-check-label" for="handover1">
-                                    화투 압수
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="handover" id="handover2">
-                                <label class="form-check-label" for="handover2">
-                                    옥분 할머니와 싸움
-                                </label>
-                            </div>
+                            <h5 class="card-subtitle mb-3">인수인계 사항</h5>
+                            <ul class="symptom-list">
+                                <!-- Care handovers will be dynamically loaded here -->
+                            </ul>
                         </div>
 
                         <!-- Input group for adding new notes -->
@@ -322,13 +348,37 @@
 </div>
 
 <script>
-    // 날짜 변경 버튼 기능
-    document.getElementById('change-date-btn').addEventListener('click', function() {
-        let newDate = prompt('새로운 날짜를 입력하세요');
-        if (newDate) {
-            document.getElementById('date-title').textContent = newDate;
+    // 날짜 선택 이벤트 리스너
+    document.getElementById('datePicker').addEventListener('change', function () {
+        const selectedId = document.getElementById('elderlySelect').value;
+        const selectedDate = this.value;
+
+        if (selectedId && selectedDate) {
+            loadDialogByElderlyAndDate(selectedId, selectedDate);
         }
     });
+
+    // 노인 및 날짜에 따라 대화 데이터를 불러오는 함수
+    function loadDialogByElderlyAndDate(elderlyId, date) {
+        fetch(`/api/robot-dialog/${elderlyId}/${date}`)  // 대화 데이터 API 호출
+            .then(response => response.json())
+            .then(data => {
+                const dialogSummary = document.getElementById('dialogSummary');
+                dialogSummary.innerHTML = '';  // 기존 대화 내용 초기화
+
+                if (data.length === 0) {
+                    dialogSummary.innerHTML = '<p>해당 날짜의 대화가 없습니다.</p>';
+                    return;
+                }
+
+                data.forEach(dialog => {
+                    const robotSummarize = `<p>휴: ${dialog.robotSummarize}</p>`;
+                    const elderlySummarize = `<p>어르신: ${dialog.elderlySummarize}</p><hr>`;
+                    dialogSummary.innerHTML += robotSummarize + elderlySummarize;
+                });
+            })
+            .catch(error => console.error('Error fetching dialog data:', error));
+    }
 
     // Chart.js setup for 폭언 빈도 chart
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -369,22 +419,21 @@
                 data.forEach(elderly => {
                     const option = document.createElement('option');
                     option.value = elderly.elderly_id;
-                    option.textContent = `${elderly.name} (ID: ${elderly.elderly_id})`;
+                    option.textContent = `${elderly.name} (ID : ${elderly.elderly_id})`;
                     select.appendChild(option);
                 });
             })
             .catch(error => console.error('Error fetching elderly list:', error));
     }
 
-    // 선택한 노인 ID에 맞게 정보를 불러오는 함수
+    // 노인 리스트와 해당 데이터를 불러오는 함수
     document.getElementById('elderlySelect').addEventListener('change', function() {
-        const selectedId = this.value;
-        if (selectedId) {
-            fetch(`/api/elderly/${selectedId}`)  // 선택한 노인 정보 불러오는 API
+        const selectedId = parseInt(this.value, 10); // 정수로 변환
+        if (!isNaN(selectedId)) {
+            fetch(`/api/elderly/${selectedId}`)  // 정수값 전달
                 .then(response => response.json())
                 .then(elderly => {
-                    console.log(elderly);  // 데이터가 제대로 불러와지는지 확인
-                    // 아래의 코드가 실행되었는지 확인
+                    console.log(elderly);
                     document.getElementById('elderlyName').textContent = elderly.name;
                     document.getElementById('elderlyAge').textContent = elderly.age;
                     document.getElementById('elderlyGender').textContent = elderly.gender;
@@ -394,8 +443,103 @@
                     document.getElementById('elderlyCreateTime').textContent = elderly.create_time;
                 })
                 .catch(error => console.error('Error fetching elderly data:', error));
+
+            // 대응 메뉴얼 불러오기
+            fetch(`/api/elderly/${selectedId}/top3-manuals`)
+                .then(response => response.json())
+                .then(manuals => {
+                    const priorityList = document.querySelector('.priority-list');
+                    priorityList.innerHTML = '';  // 기존 리스트 초기화
+
+                    manuals.forEach(manual => {
+                        const priorityItem = document.createElement('div');
+                        priorityItem.classList.add('priority-item');
+
+                        const method = document.createElement('span');
+                        method.textContent = manual.detect_method;
+                        priorityItem.appendChild(method);
+
+                        const successRate = document.createElement('span');
+                        successRate.classList.add('badge');
+                        successRate.textContent = `${((manual.success_attempts / manual.total_attempts) * 100).toFixed(2)}%`;
+                        priorityItem.appendChild(successRate);
+
+                        priorityList.appendChild(priorityItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching manual data:', error));
+
+            // 인수인계 사항 불러오기
+            loadCareHandovers(selectedId);
+        }else {
+            console.error('Invalid elderly ID:', this.value);
         }
     });
+
+    // 인수인계 사항을 불러오는 함수
+    function loadCareHandovers(elderlyId) {
+        fetch(`/api/elderly/${elderlyId}/care-handovers`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(careHandovers => {
+                const careHandoverList = document.querySelector('.handover-section .symptom-list');
+                careHandoverList.innerHTML = '';  // 기존 리스트 초기화
+                careHandovers.forEach((handover) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = handover.text;  // 인수인계 사항 텍스트
+
+                    // 삭제 버튼 추가
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = '삭제';
+                    deleteButton.classList.add('btn', 'btn-danger', 'btn-sm', 'ml-2');  // 버튼 스타일 추가
+                    // 리스트 항목의 실제 handoverId 사용
+                    deleteButton.addEventListener('click', () => deleteCareHandover(handover.no, listItem));
+
+                    listItem.appendChild(deleteButton);
+                    careHandoverList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error fetching care handovers:', error));
+    }
+
+    // 인수인계 사항 삭제
+    function deleteCareHandover(handoverId, listItem) {
+        console.log("Deleting handover with ID:", handoverId); // 삭제 시도 전 로그
+        fetch(`/api/elderly/care-handovers/${handoverId}`, {
+            method: 'DELETE'
+        })
+            .then(() => {
+                console.log('Deleted successfully');
+                listItem.remove();  // 삭제 후 해당 항목을 화면에서 제거
+            })
+            .catch(error => console.error('Error deleting handover:', error));
+    }
+
+    // 인수인계 사항 추가
+    document.querySelector('.input-group .btn').addEventListener('click', function() {
+        const handoverText = document.querySelector('.input-group input').value;
+        const selectedId = document.getElementById('elderlySelect').value;
+
+        fetch(`/api/elderly/${selectedId}/care-handovers`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text: handoverText })
+        })
+            .then(response => response.text())  // .json() 대신 .text()로 변경
+            .then(() => {
+                console.log('Handover added successfully');
+                loadCareHandovers(selectedId);  // 다시 목록을 불러와 갱신
+            })
+            .catch(error => console.error('Error adding handover:', error));
+    });
+
+
 </script>
 </body>
 </html>
