@@ -176,26 +176,27 @@
 <div class="container mt-5">
     <div class="row">
         <!-- 아이디카드 -->
-        <div class="col-md-3">
-            <div class="card text-start">
-                <img class="card-img-top" src="/img/grandma.png" alt="Title" />
-                <div class="card-body">
-<!--                    <h4 class="card-title">인적사항</h4>-->
-<!--                    <p class="card-text">성함 : 김춘분</p>-->
-<!--                    <p class="card-text">성별 : 여</p>-->
-<!--                    <p class="card-text">생년월일 : 38.02.24</p>-->
-<!--                    <p class="card-text">학력 : 무</p>-->
-<!--                    <p class="card-text">건강상태 : 치매, 청각장애 3급, 우울증, 관절염</p>-->
-<!--                    <p class="card-text">비상연락망(자) : 010-0000-0000</p>-->
-<!--                    <p class="card-text">비상연락망(녀) : 010-0000-0000</p>-->
-                    <p>이름: <span th:text="${elderly.name}"></span></p>
-                    <p>나이: <span th:text="${elderly.age}"></span></p>
-                    <p>성별: <span th:text="${elderly.gender}"></span></p>
-                    <p>생년월일: <span th:text="${elderly.birth}"></span></p>
-                    <p>건강 상태: <span th:text="${elderly.condition}"></span></p>
-                    <p>연락처: <span th:text="${elderly.contact}"></span></p>
-                    <p>등록 시간: <span th:text="${elderly.create_time}"></span></p>
-                </div>
+            <!-- 노인 선택 드롭다운 추가 -->
+            <div class="col-md-12 mb-4">
+                <label for="elderlySelect" class="form-label">노인 선택</label>
+                <select class="form-select" id="elderlySelect" aria-label="노인 선택">
+                    <option selected>노인을 선택하세요</option>
+                </select>
+            </div>
+
+            <!-- 노인 정보 표시 -->
+            <div class="col-md-3">
+                <div class="card text-start">
+                    <img class="card-img-top" src="/img/grandma.png" alt="Title" />
+                    <div class="card-body">
+                        <p>이름: <span id="elderlyName"></span></p>
+                        <p>나이: <span id="elderlyAge"></span></p>
+                        <p>성별: <span id="elderlyGender"></span></p>
+                        <p>생년월일: <span id="elderlyBirth"></span></p>
+                        <p>건강 상태: <span id="elderlyCondition"></span></p>
+                        <p>연락처: <span id="elderlyContact"></span></p>
+                        <p>등록 시간: <span id="elderlyCreateTime"></span></p>
+                    </div>
             </div>
         </div>
 
@@ -351,6 +352,48 @@
                     max: 8
                 }
             }
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadElderlyList();
+    });
+
+    // 서버에서 노인 리스트를 불러오는 함수
+    function loadElderlyList() {
+        fetch('/api/elderly-list')  // 서버에서 노인 리스트를 제공하는 API 엔드포인트
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);  // 데이터가 잘 불러와지는지 확인
+                const select = document.getElementById('elderlySelect');
+                data.forEach(elderly => {
+                    const option = document.createElement('option');
+                    option.value = elderly.elderly_id;
+                    option.textContent = `${elderly.name} (ID: ${elderly.elderly_id})`;
+                    select.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching elderly list:', error));
+    }
+
+    // 선택한 노인 ID에 맞게 정보를 불러오는 함수
+    document.getElementById('elderlySelect').addEventListener('change', function() {
+        const selectedId = this.value;
+        if (selectedId) {
+            fetch(`/api/elderly/${selectedId}`)  // 선택한 노인 정보 불러오는 API
+                .then(response => response.json())
+                .then(elderly => {
+                    console.log(elderly);  // 데이터가 제대로 불러와지는지 확인
+                    // 아래의 코드가 실행되었는지 확인
+                    document.getElementById('elderlyName').textContent = elderly.name;
+                    document.getElementById('elderlyAge').textContent = elderly.age;
+                    document.getElementById('elderlyGender').textContent = elderly.gender;
+                    document.getElementById('elderlyBirth').textContent = elderly.birth;
+                    document.getElementById('elderlyCondition').textContent = elderly.condition;
+                    document.getElementById('elderlyContact').textContent = elderly.contact;
+                    document.getElementById('elderlyCreateTime').textContent = elderly.create_time;
+                })
+                .catch(error => console.error('Error fetching elderly data:', error));
         }
     });
 </script>

@@ -15,4 +15,33 @@
         WHERE ELDERLY_ID = #{id}
     </select>
 
+    <!-- 특정 ID로 노인 찾기 -->
+    <select id="findById" parameterType="int" resultType="com.example.hue.dto.Elderly">
+        SELECT
+            ELDERLY_ID,
+            NAME,
+            AGE,
+            GENDER,
+            BIRTH,
+            CONDITION,
+            CONTACT,
+            CREATE_TIME
+        FROM ELDERLY
+        WHERE ELDERLY_ID = #{id}
+    </select>
+
+    <!-- 모든 노인 정보 가져오기 -->
+    <select id="findAll" resultType="com.example.hue.dto.Elderly">
+        SELECT
+            ELDERLY_ID,
+            NAME,
+            AGE,
+            GENDER,
+            BIRTH,
+            CONDITION,
+            CONTACT,
+            CREATE_TIME
+        FROM ELDERLY
+    </select>
+
 </mapper>
