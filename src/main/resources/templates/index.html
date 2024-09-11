@@ -234,7 +234,7 @@
             <!-- 노인 정보 표시 -->
             <div class="col-md-3">
                 <div class="card text-start">
-                    <img class="card-img-top" src="/img/grandma.png" alt="Title" />
+                    <img class="card-img-top" id="elderlyImage" src="/img/default_elderly.png" alt="Title" />
                     <div class="card-body">
                         <p><b>이름 :</b> <span id="elderlyName"></span></p>
                         <p><b>나이 :</b> <span id="elderlyAge"></span></p>
@@ -397,6 +397,19 @@
     // 노인 리스트와 해당 데이터를 불러오는 함수
     document.getElementById('elderlySelect').addEventListener('change', function() {
         const selectedId = parseInt(this.value, 10); // 정수로 변환
+        const elderlyImage = document.getElementById('elderlyImage');
+
+        // 노인 선택에 따른 이미지 변경 로직
+        if (selectedId === 1) {
+            elderlyImage.src = "/img/elderly_1.png";
+        } else if (selectedId === 2) {
+            elderlyImage.src = "/img/elderly_2.png";
+        } else if (selectedId === 3) {
+            elderlyImage.src = "/img/elderly_3.png";
+        } else {
+            elderlyImage.src = "/img/default_elderly.png";
+        }
+
         if (!isNaN(selectedId)) {
             fetch(`/api/elderly/${selectedId}`)  // 정수값 전달
                 .then(response => response.json())
