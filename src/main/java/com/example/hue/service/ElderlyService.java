@@ -1,9 +1,6 @@
 package com.example.hue.service;
 
-import com.example.hue.dto.CareHandover;
-import com.example.hue.dto.Elderly;
-import com.example.hue.dto.RobotDialog;
-import com.example.hue.dto.RobotManual;
+import com.example.hue.dto.*;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -18,5 +15,6 @@ public interface ElderlyService {
     void deleteCareHandover(int handoverId);
 
     List<RobotDialog> getDialogByElderlyAndDate(int elderlyId, String date);
-}
+    public List<RobotDialogEmotion> getEmotionByElderlyAndDate(int elderlyId, String date);
+ }
 

@@ -1,13 +1,7 @@
 package com.example.hue.service;
 
-import com.example.hue.dto.CareHandover;
-import com.example.hue.dto.Elderly;
-import com.example.hue.dto.RobotDialog;
-import com.example.hue.dto.RobotManual;
-import com.example.hue.mapper.CareHandoverMapper;
-import com.example.hue.mapper.ElderlyMapper;
-import com.example.hue.mapper.RobotDialogMapper;
-import com.example.hue.mapper.RobotManualMapper;
+import com.example.hue.dto.*;
+import com.example.hue.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +21,9 @@ public class ElderlyServiceImp implements ElderlyService {
 
     @Autowired
     private RobotDialogMapper robotDialogMapper;
+
+    @Autowired
+    private RobotDialogEmotionMapper robotDialogEmotionMapper;
 
     @Override
     public List<Elderly> getAllElderly() {
@@ -63,6 +60,10 @@ public class ElderlyServiceImp implements ElderlyService {
     @Override
     public List<RobotDialog> getDialogByElderlyAndDate(int elderlyId, String date) {
         return robotDialogMapper.findByElderlyIdAndDate(elderlyId, date);
+    }
+
+    public List<RobotDialogEmotion> getEmotionByElderlyAndDate(int elderlyId, String date) {
+        return robotDialogEmotionMapper.findByElderlyIdAndDate(elderlyId, date);
     }
 
 }

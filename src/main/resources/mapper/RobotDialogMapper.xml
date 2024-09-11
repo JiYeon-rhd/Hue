@@ -15,6 +15,6 @@
             robot_dialog
         WHERE
             elderly_id = #{elderlyId}
-          AND DATE(create_time) = #{date}
+          AND TRUNC(create_time) = TO_DATE(#{date}, 'YYYY-MM-DD')
     </select>
 </mapper>

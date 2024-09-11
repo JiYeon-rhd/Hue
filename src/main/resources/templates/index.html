@@ -36,6 +36,7 @@
             font-weight: bold;
             text-align: center;
             margin-bottom: 10px;
+
         }
 
         .manual-card, .symptom-card {
@@ -115,6 +116,11 @@
 
         .symptom-card .card-title {
             font-weight: bold;
+        }
+
+        .manual-card .card-title {
+            font-weight: bold;
+            font-size: 24px;
         }
 
         .symptom-card .add-icon {
@@ -198,6 +204,19 @@
             color: white;
         }
 
+        /* 주요 치매 증상 및 인수인계 사항 리스트 항목 스타일 */
+        .symptom-list li, .handover-section .symptom-list li {
+            /*font-weight: bold; !* 글자 굵기 *!*/
+            font-size: 16px; /* 글자 크기 */
+        }
+
+        /* 제목 스타일 */
+        .symptom-card .card-title, .handover-section h5 {
+            font-weight: bold;
+            font-size: 24px; /* 제목 글자 크기 */
+        }
+
+
     </style>
 </head>
 <body>
@@ -217,13 +236,13 @@
                 <div class="card text-start">
                     <img class="card-img-top" src="/img/grandma.png" alt="Title" />
                     <div class="card-body">
-                        <p>이름: <span id="elderlyName"></span></p>
-                        <p>나이: <span id="elderlyAge"></span></p>
-                        <p>성별: <span id="elderlyGender"></span></p>
-                        <p>생년월일: <span id="elderlyBirth"></span></p>
-                        <p>건강 상태: <span id="elderlyCondition"></span></p>
-                        <p>연락처: <span id="elderlyContact"></span></p>
-                        <p>등록 시간: <span id="elderlyCreateTime"></span></p>
+                        <p><b>이름 :</b> <span id="elderlyName"></span></p>
+                        <p><b>나이 :</b> <span id="elderlyAge"></span></p>
+                        <p><b>성별 :</b> <span id="elderlyGender"></span></p>
+                        <p><b>생년월일 :</b> <span id="elderlyBirth"></span></p>
+                        <p><b>건강상태 :</b> <span id="elderlyCondition"></span></p>
+                        <p><b>연락처 :</b> <span id="elderlyContact"></span></p>
+                        <p><b>등록일 :</b> <span id="elderlyCreateTime"></span></p>
                     </div>
             </div>
         </div>
@@ -233,10 +252,9 @@
             <div class="card conversation-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="card-title" id="date-title">9월 5일</h4>
+                        <h4 class="card-title" id="date-input"> <!-- 여기에 페이지 로드됨과 동시에 접속 일자 로드 --></h4>
                         <input type="date" id="datePicker" class="form-control w-auto" />
                     </div>
-
                     <!-- 상태와 대화 요약을 가로로 배치 -->
                     <div class="row mt-4">
                         <!-- 상태 -->
@@ -244,21 +262,23 @@
                             <div class="mood-check-title">기분 상태 체크</div>
                             <div class="d-flex justify-content-around my-3">
                                 <div class="text-center mood-check">
-                                    <img src="/img/sad.png" alt="아침 상태" width="80">
+                                    <img id="morningMood" src="/img/happy.png" alt="아침 상태" width="80">
                                     <p>아침</p>
                                 </div>
                                 <div class="text-center mood-check">
-                                    <img src="/img/happy.png" alt="저녁 상태" width="80">
+                                    <img id="nightMood" src="/img/happy.png" alt="저녁 상태" width="80">
                                     <p>저녁</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- 대화 요약 -->
-                        <div class="conversation-title mt-4">대화 요약</div>
-                        <div id="dialogSummary">
+                            <div class="col-md-6">
+                                <div class="conversation-title">대화 요약</div>
+                                <div id="dialogSummary">
                             <!-- 여기에 대화가 출력될 예정입니다 -->
-                        </div>
+                            </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -274,28 +294,8 @@
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.85-3.85zm-5.442.906a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z"/>
                             </svg>
                         </div>
-
-<!--                        <div class="priority-list">-->
-<!--                            <div class="priority-item">-->
-<!--                                <span>1. 바둑두기</span>-->
-<!--                                <span class="badge">80%</span>-->
-<!--                            </div>-->
-<!--                            <div class="priority-item">-->
-<!--                                <span>2. 공감하는 말하기</span>-->
-<!--                                <span class="badge">70%</span>-->
-<!--                            </div>-->
-<!--                            <div class="priority-item">-->
-<!--                                <span>3. 요양보호사 호출</span>-->
-<!--                                <span class="badge">40%</span>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <div class="priority-list">
                             <!-- 상위 3개의 대응 메뉴얼 출력 -->
-<!--                            <div th:each="manual : ${top3Manuals}">-->
-<!--                                <div class="priority-item">-->
-<!--                                    <span th:text="${manual.detect_method}">대응 방법</span>-->
-<!--                                    <span class="badge" th:text="${#numbers.formatDecimal(manual.successRate, 0, 2)} + '%'">성공률</span>-->
-<!--                                </div>-->
 <!--                            </div>-->
                         </div>
                         <!-- Chart.js chart container -->
@@ -348,38 +348,6 @@
 </div>
 
 <script>
-    // 날짜 선택 이벤트 리스너
-    document.getElementById('datePicker').addEventListener('change', function () {
-        const selectedId = document.getElementById('elderlySelect').value;
-        const selectedDate = this.value;
-
-        if (selectedId && selectedDate) {
-            loadDialogByElderlyAndDate(selectedId, selectedDate);
-        }
-    });
-
-    // 노인 및 날짜에 따라 대화 데이터를 불러오는 함수
-    function loadDialogByElderlyAndDate(elderlyId, date) {
-        fetch(`/api/robot-dialog/${elderlyId}/${date}`)  // 대화 데이터 API 호출
-            .then(response => response.json())
-            .then(data => {
-                const dialogSummary = document.getElementById('dialogSummary');
-                dialogSummary.innerHTML = '';  // 기존 대화 내용 초기화
-
-                if (data.length === 0) {
-                    dialogSummary.innerHTML = '<p>해당 날짜의 대화가 없습니다.</p>';
-                    return;
-                }
-
-                data.forEach(dialog => {
-                    const robotSummarize = `<p>휴: ${dialog.robotSummarize}</p>`;
-                    const elderlySummarize = `<p>어르신: ${dialog.elderlySummarize}</p><hr>`;
-                    dialogSummary.innerHTML += robotSummarize + elderlySummarize;
-                });
-            })
-            .catch(error => console.error('Error fetching dialog data:', error));
-    }
-
     // Chart.js setup for 폭언 빈도 chart
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
@@ -435,8 +403,11 @@
                 .then(elderly => {
                     console.log(elderly);
                     document.getElementById('elderlyName').textContent = elderly.name;
-                    document.getElementById('elderlyAge').textContent = elderly.age;
-                    document.getElementById('elderlyGender').textContent = elderly.gender;
+                    document.getElementById('elderlyAge').textContent = elderly.age + ' 세';
+                    // document.getElementById('elderlyGender').textContent = elderly.gender;
+                    // 성별을 'F' -> '여성', 'M' -> '남성'으로 변환
+                    const genderText = elderly.gender === 'F' ? '여성' : (elderly.gender === 'M' ? '남성' : '기타');
+                    document.getElementById('elderlyGender').textContent = genderText;
                     document.getElementById('elderlyBirth').textContent = elderly.birth;
                     document.getElementById('elderlyCondition').textContent = elderly.condition;
                     document.getElementById('elderlyContact').textContent = elderly.contact;
@@ -475,6 +446,85 @@
             console.error('Invalid elderly ID:', this.value);
         }
     });
+
+    // html 로드하면 오늘날짜로 변경해주는 스크립트
+    window.onload = function() {
+        const date = new Date();  // 현재 날짜를 가져옴
+        const year = date.getFullYear();  // 년도
+        const month = date.getMonth() + 1;  // 월 (0부터 시작하므로 1을 더해줌)
+        const day = date.getDate();  // 일
+
+        // 날짜를 '2024년 9월 11일' 형식으로 변환
+        const formattedDate = `${year}년 ${month}월 ${day}일`;
+
+        // h4 태그의 내용 변경
+        document.getElementById('date-input').textContent = formattedDate;
+    };
+
+    // 날짜 선택기 변경 이벤트 리스너
+    document.getElementById('datePicker').addEventListener('change', function () {
+        const selectedId = document.getElementById('elderlySelect').value;
+        const selectedDate = new Date(this.value).toISOString().split('T')[0];  // YYYY-MM-DD 형식으로 변환
+
+        if (selectedId && selectedDate) {
+            loadDialogByElderlyAndDate(selectedId, selectedDate);
+            loadEmotionByElderlyAndDate(selectedId, selectedDate);  // 감정 상태 불러오기
+            updateDateTitle(selectedDate); // 선택한 날짜로 제목 업데이트
+        }
+    });
+
+
+    // 날짜를 형식에 맞게 변환하여 date-input을 업데이트하는 함수
+    function updateDateTitle(selectedDate) {
+        const dateObj = new Date(selectedDate);
+
+        if (isNaN(dateObj)) {
+            document.getElementById('date-input').textContent = '유효하지 않은 날짜';
+            return;
+        }
+
+        const year = dateObj.getFullYear();
+        const month = dateObj.getMonth() + 1; // 월은 0부터 시작
+        const day = dateObj.getDate();
+
+        // 연도를 포함하여 날짜 제목 업데이트
+        document.getElementById('date-input').textContent = `${year}년 ${month}월 ${day}일`;
+    }
+
+
+    // 노인 및 날짜에 따라 대화 데이터를 불러오는 함수
+    function loadDialogByElderlyAndDate(elderlyId, date) {
+        fetch(`/api/robot-dialog/${elderlyId}/${date}`)  // 대화 데이터 API 호출
+            .then(response => response.json())
+            .then(data => {
+                const dialogSummary = document.getElementById('dialogSummary');
+                dialogSummary.innerHTML = '';  // 기존 대화 내용 초기화
+
+                if (data.length === 0) {
+                    dialogSummary.innerHTML = '<p>해당 날짜의 대화가 없습니다.</p>';
+                    return;
+                }
+
+                data.forEach(dialog => {
+                    const robotSummarize = `<p>휴: ${dialog.robotSummarize}</p>`;
+                    const elderlySummarize = `<p>어르신: ${dialog.elderlySummarize}</p><hr>`;
+                    dialogSummary.innerHTML += robotSummarize + elderlySummarize;
+                });
+            })
+            .catch(error => console.error('Error fetching dialog data:', error));
+    }
+
+    // 노인 및 날짜에 따라 아침과 저녁 기분 상태를 불러오는 함수
+    function loadEmotionByElderlyAndDate(elderlyId, date) {
+        fetch(`/api/robot-emotion/${elderlyId}/${date}`)
+            .then(response => response.json())
+            .then(emotion => {
+                // 아침과 저녁 기분 상태 이미지 업데이트
+                document.getElementById('morningMood').src = emotion.morning;
+                document.getElementById('nightMood').src = emotion.night;
+            })
+            .catch(error => console.error('Error fetching emotion data:', error));
+    }
 
     // 인수인계 사항을 불러오는 함수
     function loadCareHandovers(elderlyId) {
