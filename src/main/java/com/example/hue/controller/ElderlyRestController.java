@@ -70,34 +70,32 @@ public class ElderlyRestController {
     // 조회 감정이미지 로딩
     @GetMapping("/api/robot-emotion/{elderlyId}/{date}")
     public Map<String, String> getEmotionByElderlyAndDate(@PathVariable int elderlyId, @PathVariable String date) {
-        // 아침, 저녁 감정 상태를 조회
+        System.out.println("요청된 날짜: " + date);  // 요청된 날짜 출력
         List<RobotDialogEmotion> emotions = elderlyService.getEmotionByElderlyAndDate(elderlyId, date);
 
+        // 로그로 감정 데이터 출력
+        emotions.forEach(emotion -> System.out.println("감정 데이터: " + emotion));
         Map<String, String> emotionMap = new HashMap<>();
 
         // 기본값 설정 (모두 'happy.png')
-        emotionMap.put("morning", "/src/happy.png");
-        emotionMap.put("night", "/src/happy.png");
+        emotionMap.put("morning", "/img/happy.png");
+        emotionMap.put("night", "/img/happy.png");
 
         for (RobotDialogEmotion emotion : emotions) {
-            // CREATE_TIME이 null이 아닌 경우에만 처리
-            LocalDate createDate = emotion.getCreateTime();
-            if (createDate != null) {
-                LocalDateTime createDateTime = createDate.atTime(LocalTime.MIDNIGHT);  // 기본적으로 00:00:00으로 설정
-                LocalTime time = createDateTime.toLocalTime();
-
-                // 12시 이전은 아침, 이후는 저녁으로 구분
-                String timeOfDay = time.isBefore(LocalTime.NOON) ? "morning" : "night";
-                String mood = emotion.getGoodBadYn().equals("Y") ? "/img/happy.png" : "/img/sad.png";
-                emotionMap.put(timeOfDay, mood);
+            String timeOfDay;
+            if ("Y".equals(emotion.getMorningNightYn())) {
+                timeOfDay = "morning";
             } else {
-                // Null일 경우 기본 이미지 처리
-                emotionMap.put("morning", "/img/happy.png");
-                emotionMap.put("night", "/img/happy.png");
+                timeOfDay = "night";
             }
+
+            // GOOD_BAD_YN에 따라 기분 상태 변경
+            String mood = emotion.getGoodBadYn().equals("Y") ? "/img/happy.png" : "/img/sad.png";
+            emotionMap.put(timeOfDay, mood);
         }
 
         return emotionMap;
     }
+
 
 }
