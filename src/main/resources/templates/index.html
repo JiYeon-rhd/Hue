@@ -60,6 +60,12 @@
         .manual-card {
             position: relative;
             background-color: #ffffff;
+            /*??*/
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 20px;
+            margin-top: 20px;
+            height: auto; /* 자동으로 높이를 조절하도록 변경 */
         }
 
         /* 검색 아이콘 */
@@ -121,6 +127,7 @@
         .manual-card .card-title {
             font-weight: bold;
             font-size: 24px;
+            margin-bottom: 10px; /*??*/
         }
 
         .symptom-card .add-icon {
@@ -216,6 +223,14 @@
             font-size: 24px; /* 제목 글자 크기 */
         }
 
+        #map {
+            width: 100%;
+            height: 300px; /* 높이를 200px로 제한 */
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            background-color: #f1f3f5;
+        }
+
 
     </style>
 </head>
@@ -225,9 +240,9 @@
         <!-- 아이디카드 -->
             <!-- 노인 선택 드롭다운 추가 -->
             <div class="col-md-12 mb-4">
-                <label for="elderlySelect" class="form-label">노인 선택</label>
-                <select class="form-select" id="elderlySelect" aria-label="노인 선택">
-                    <option selected>노인을 선택하세요</option>
+                <label for="elderlySelect" class="form-label">어르신 선택</label>
+                <select class="form-select" id="elderlySelect" aria-label="어르신 선택">
+                    <option selected>어르신을 선택하세요</option>
                 </select>
             </div>
 
@@ -244,8 +259,22 @@
                         <p><b>연락처 :</b> <span id="elderlyContact"></span></p>
                         <p><b>등록일 :</b> <span id="elderlyCreateTime"></span></p>
                     </div>
+                </div>
+
+                <!-- 맵 표시 -->
+                <div class="manual-card">
+                    <h4 class="card-title">로봇 현재 위치</h4>
+                    <div id="map">
+                        <img id="" src="/img/robot_map.png" alt="Map" style="width: 100%; height: 100%;" />
+                    </div>
+                </div>
             </div>
-        </div>
+
+<!--        <div class="col-md-3">-->
+<!--            <div class="card text-start">-->
+<!--                <img class="card-img-top" id="" src="/img/robot_map.png" alt="Map" />-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- 일별 어르신 상태 & 대화 -->
         <div class="col-md-9">
