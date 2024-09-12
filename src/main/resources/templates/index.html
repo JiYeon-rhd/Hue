@@ -60,12 +60,10 @@
         .manual-card {
             position: relative;
             background-color: #ffffff;
-            /*??*/
             border-radius: 10px;
             border: 2px solid #e9ecef;
             padding: 20px;
-            margin-top: 20px;
-            height: auto; /* 자동으로 높이를 조절하도록 변경 */
+            margin-top: 20px; /* 간격 추가 */
         }
 
         /* 검색 아이콘 */
@@ -127,7 +125,6 @@
         .manual-card .card-title {
             font-weight: bold;
             font-size: 24px;
-            margin-bottom: 10px; /*??*/
         }
 
         .symptom-card .add-icon {
@@ -176,7 +173,41 @@
             cursor: pointer;
         }
 
-        .symptom-list button:hover {
+        /* Inheritance */
+        .handover-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+
+        /* Updated layout for each care handover item */
+        .handover-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+        }
+
+        /* Align radio button with the text */
+        .handover-list .form-check-input {
+            margin-right: 10px;
+        }
+
+        /* Align delete button at the end */
+        .handover-list button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .handover-list button:hover {
             background-color: #c82333;
         }
 
@@ -212,7 +243,7 @@
         }
 
         /* 주요 치매 증상 및 인수인계 사항 리스트 항목 스타일 */
-        .symptom-list li, .handover-section .symptom-list li {
+        .symptom-list li, .handover-section .handover-list li {
             /*font-weight: bold; !* 글자 굵기 *!*/
             font-size: 16px; /* 글자 크기 */
         }
@@ -229,8 +260,8 @@
             border: 1px solid #e9ecef;
             border-radius: 10px;
             background-color: #f1f3f5;
+            margin-top: 20px;
         }
-
 
     </style>
 </head>
@@ -238,43 +269,37 @@
 <div class="container mt-5">
     <div class="row">
         <!-- 아이디카드 -->
-            <!-- 노인 선택 드롭다운 추가 -->
-            <div class="col-md-12 mb-4">
-                <label for="elderlySelect" class="form-label">어르신 선택</label>
-                <select class="form-select" id="elderlySelect" aria-label="어르신 선택">
-                    <option selected>어르신을 선택하세요</option>
-                </select>
-            </div>
+        <!-- 노인 선택 드롭다운 추가 -->
+        <div class="col-md-12 mb-4">
+            <label for="elderlySelect" class="form-label">노인 선택</label>
+            <select class="form-select" id="elderlySelect" aria-label="노인 선택">
+                <option selected>노인을 선택하세요</option>
+            </select>
+        </div>
 
-            <!-- 노인 정보 표시 -->
-            <div class="col-md-3">
-                <div class="card text-start">
-                    <img class="card-img-top" id="elderlyImage" src="/img/default_elderly.png" alt="Title" />
-                    <div class="card-body">
-                        <p><b>이름 :</b> <span id="elderlyName"></span></p>
-                        <p><b>나이 :</b> <span id="elderlyAge"></span></p>
-                        <p><b>성별 :</b> <span id="elderlyGender"></span></p>
-                        <p><b>생년월일 :</b> <span id="elderlyBirth"></span></p>
-                        <p><b>건강상태 :</b> <span id="elderlyCondition"></span></p>
-                        <p><b>연락처 :</b> <span id="elderlyContact"></span></p>
-                        <p><b>등록일 :</b> <span id="elderlyCreateTime"></span></p>
-                    </div>
-                </div>
-
-                <!-- 맵 표시 -->
-                <div class="manual-card">
-                    <h4 class="card-title">로봇 현재 위치</h4>
-                    <div id="map">
-                        <img id="" src="/img/robot_map.png" alt="Map" style="width: 100%; height: 100%;" />
-                    </div>
+        <!-- 노인 정보 표시 -->
+        <div class="col-md-3">
+            <div class="card text-start">
+                <img class="card-img-top" id="elderlyImage" src="/img/default_elderly.png" alt="Title" />
+                <div class="card-body">
+                    <p><b>이름 :</b> <span id="elderlyName"></span></p>
+                    <p><b>나이 :</b> <span id="elderlyAge"></span></p>
+                    <p><b>성별 :</b> <span id="elderlyGender"></span></p>
+                    <p><b>생년월일 :</b> <span id="elderlyBirth"></span></p>
+                    <p><b>건강상태 :</b> <span id="elderlyCondition"></span></p>
+                    <p><b>연락처 :</b> <span id="elderlyContact"></span></p>
+                    <p><b>등록일 :</b> <span id="elderlyCreateTime"></span></p>
                 </div>
             </div>
 
-<!--        <div class="col-md-3">-->
-<!--            <div class="card text-start">-->
-<!--                <img class="card-img-top" id="" src="/img/robot_map.png" alt="Map" />-->
-<!--            </div>-->
-<!--        </div>-->
+            <!-- 맵 표시 -->
+            <div class="manual-card mb-5" style="width: 100%; height: auto;">
+                <h4 class="card-title">로봇 현재 위치</h4>
+                <div id="map">
+                    <img id="" src="/img/robot_map.png" alt="Map" style="width: 100%; height: 100%;" />
+                </div>
+            </div>
+        </div>
 
         <!-- 일별 어르신 상태 & 대화 -->
         <div class="col-md-9">
@@ -302,12 +327,12 @@
                         </div>
 
                         <!-- 대화 요약 -->
-                            <div class="col-md-6">
-                                <div class="conversation-title">대화 요약</div>
-                                <div id="dialogSummary">
-                            <!-- 여기에 대화가 출력될 예정입니다 -->
+                        <div class="col-md-6">
+                            <div class="conversation-title">대화 요약</div>
+                            <div id="dialogSummary">
+                                <!-- 여기에 대화가 출력될 예정입니다 -->
                             </div>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -325,7 +350,7 @@
                         </div>
                         <div class="priority-list">
                             <!-- 상위 3개의 대응 메뉴얼 출력 -->
-<!--                            </div>-->
+                            <!--                            </div>-->
                         </div>
                         <!-- Chart.js chart container -->
                         <div class="chart-container">
@@ -353,15 +378,15 @@
                         <!-- 인수인계 사항 -->
                         <div class="handover-section">
                             <h5 class="card-subtitle mb-3">인수인계 사항</h5>
-                            <ul class="symptom-list">
+                            <ul class="handover-list">
                                 <!-- Care handovers will be dynamically loaded here -->
                             </ul>
                         </div>
 
                         <!-- Input group for adding new notes -->
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="입력하세요" aria-label="입력하세요">
-                            <button class="btn btn-outline-secondary" type="button">
+                            <input type="text" id="handoverInput" class="form-control" placeholder="입력하세요" aria-label="입력하세요">
+                            <button class="btn btn-outline-secondary" type="button" id="addHandoverButton">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M6.854 3.646a.5.5 0 0 1 0 .708L3.707 7.5H13.5a.5.5 0 0 1 0 1H3.707l3.147 3.146a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0z"/>
                                 </svg>
@@ -580,7 +605,7 @@
                 return response.json();
             })
             .then(careHandovers => {
-                const careHandoverList = document.querySelector('.handover-section .symptom-list');
+                const careHandoverList = document.querySelector('.handover-section .handover-list');
                 careHandoverList.innerHTML = '';  // 기존 리스트 초기화
                 careHandovers.forEach((handover) => {
                     const listItem = document.createElement('li');
@@ -631,6 +656,24 @@
                 loadCareHandovers(selectedId);  // 다시 목록을 불러와 갱신
             })
             .catch(error => console.error('Error adding handover:', error));
+    });
+
+    document.getElementById("addHandoverButton").addEventListener("click", function() {
+        // Get the input field
+        var inputField = document.getElementById("handoverInput");
+
+        // Get the value of the input
+        var inputValue = inputField.value;
+
+        // Add the input value to the handover list (optional, if you want to display it)
+        if (inputValue.trim() !== "") {
+            var listItem = document.createElement("li");
+            listItem.textContent = inputValue;
+            document.querySelector(".handover-list").appendChild(listItem);
+        }
+
+        // Clear the input field after submission
+        inputField.value = "";
     });
 
 
