@@ -82,7 +82,7 @@
 
 
 ## 서비스 흐름도
-[별첨]
+![서비스 흐름도](./readme_img/FLOWCHART.png)
 
 
 ## ER 다이어그램
