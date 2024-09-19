@@ -94,6 +94,7 @@
 
 ## 화면구성
 ![Slide24](https://github.com/user-attachments/assets/9ae76271-28e5-4ed6-b48c-64a1dd59efff)
+
 ![Slide25](https://github.com/user-attachments/assets/be5a4c89-fe79-4e10-bbb3-28a7eb0146b2)
 
 
