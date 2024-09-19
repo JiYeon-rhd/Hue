@@ -52,7 +52,7 @@
 
 
 ## 기술스택 
-- 프론트엔드 : HTML5, CSS3
+- 프론트엔드 : HTML5, CSS3, JS
 - 백엔드 : Spring Boot, Java, Python
 - DB : Oracle, MyBatis
 - AI 및 데이터 분석 : Python
