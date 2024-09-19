@@ -82,7 +82,7 @@
 
 
 ## 유스케이스
-[별첨]
+[[1팀]_유즈케이스_최종.docx](https://github.com/user-attachments/files/17052275/1._._.docx)
 
 
 ## 서비스 흐름도
